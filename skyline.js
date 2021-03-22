@@ -1,8 +1,5 @@
 $(window).resize(() => setTimeout(() => location.reload(true), 1500) );
 
-const w = $(window).width() - 17.5;
-const h = $(window).height() - 17.5;
-
 times = {
   '0': '63.75, 63.75, 63.75',
   '1': '42.5, 42.5, 42.5',
@@ -38,11 +35,16 @@ const buildings = [
   { 'start': null }
 ];
 
+const w = $(window).width() - 17.5;
+const h = $(window).height() - 17.5;
+
+const neW = 100 + Math.sqrt(w) * 15;
+
+const hs = [h * 0.5];
+const ws = [neW * 0.25];
+
 setup = () => {
   createCanvas(w, h);
-
-  buildings[0]['start'] = -130;
-  buildings[1]['start'] = (w / -2.0) - 130;
 
   const d = new Date();
   const hr = d.getHours();
@@ -50,40 +52,33 @@ setup = () => {
   bg = times[hr].split(',');
   bbg = times[(hr + 1) % 24].split(',');
   background(bg[0], bg[1], bg[2]);
-}
 
-const bH = h / 1.75;
-const bW = w / 5;
+  for (let i = 0; i < 4; i++) {
+    hs.push(hs[i] / 2.0);
+    ws.push(ws[i] / 2.0);
+  }
+
+  buildings[0]['start'] = -ws[0];
+  buildings[1]['start'] = (w / -2.0) - ws[0];
+}
 
 draw = () => {
 
-  const h5 = h * 0.5;
-  const h25 = h5 / 2.0;
-  const h125 = h25 / 2.0;
-  const h0625 = h125 / 2.0;
-  const h03125 = h0625 / 2.0;
-
-  const w25 = w * 0.25;
-  const w125 = w25 / 2.0;
-  const w0625 = w125 / 2.0;
-  const w03125 = w0625 / 2.0;
-  const w015625 = w03125 / 2.0;
-
   for (b of buildings) {
 
-    b['start'] = (b['start'] + 1 >= w) ? -130 : (b['start'] + 1) % w;
+    b['start'] = (b['start'] + 1 >= w) ? -ws[0] : (b['start'] + 1) % w;
 
-    triangle(b['start'] + w125, h0625, b['start'] + w125 - w015625, h - h5 - h125 - (h03125 * 4), b['start'] + w125 + w015625, h - h5 - h125 - (h03125 * 4));
+    triangle(b['start'] + ws[1], hs[3], b['start'] + ws[1] - ws[4], h - hs[0] - hs[2] - (hs[4] * 4), b['start'] + ws[1] + ws[4], h - hs[0] - hs[2] - (hs[4] * 4));
 
-    circle(b['start'] + w125, h - h5 - h125 - (h03125 * 4), w25 - w0625 - (w03125 * 4));
-    circle(b['start'] + w125, h - h5 - h125 - (h03125 * 3), w25 - w0625 - (w03125 * 3));
-    circle(b['start'] + w125, h - h5 - h125 - (h03125 * 2), w25 - w0625 - (w03125 * 2));
-    circle(b['start'] + w125, h - h5 - h125 - h03125, w25 - w0625 - w03125);
-    circle(b['start'] + w125, h - h5 - h125, w25 - w0625);
+    circle(b['start'] + ws[1], h - hs[0] - hs[2] - (hs[4] * 4), ws[0] - ws[2] - (ws[3] * 4));
+    circle(b['start'] + ws[1], h - hs[0] - hs[2] - (hs[4] * 3), ws[0] - ws[2] - (ws[3] * 3));
+    circle(b['start'] + ws[1], h - hs[0] - hs[2] - (hs[4] * 2), ws[0] - ws[2] - (ws[3] * 2));
+    circle(b['start'] + ws[1], h - hs[0] - hs[2] - hs[4], ws[0] - ws[2] - ws[3]);
+    circle(b['start'] + ws[1], h - hs[0] - hs[2], ws[0] - ws[2]);
 
-    rect(b['start'] + w03125, h - h5 - h125, w25 - w0625, h5 - h125, 5, 5, 0, 0);
-    rect(b['start'] + w0625, h5 - h0625, w125, h5 - h125);
-    rect(b['start'], h5, w25, h5, 20, 20, 0, 0);
+    rect(b['start'] + ws[3], h - hs[0] - hs[2], ws[0] - ws[2], hs[0] - hs[2], 5, 5, 0, 0);
+    rect(b['start'] + ws[2], hs[0] - hs[3], ws[1], hs[0] - hs[2]);
+    rect(b['start'], hs[0], ws[0], hs[0], 20, 20, 0, 0);
   }
   fill(bbg[0], bbg[1], bbg[2]);
   stroke(bg[0], bg[1], bg[2]);
