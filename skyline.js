@@ -53,6 +53,8 @@ setup = () => {
   bbg = times[(hr + 1) % 24].split(',');
   background(bg[0], bg[1], bg[2]);
 
+  $('#drop')[0].attributes.style.value = 'background-color: rgb(' + times[hr] + '); color: rgb(' + times[(hr + 3) % 24] + ');';
+
   for (let i = 0; i < 4; i++) {
     hs.push(hs[i] / 2.0);
     ws.push(ws[i] / 2.0);
@@ -62,11 +64,14 @@ setup = () => {
   buildings[1]['start'] = (w / -2.0) - ws[0];
 }
 
+let step = 1.0;
+speed = (v) => step = +v
+
 draw = () => {
 
   for (b of buildings) {
 
-    b['start'] = (b['start'] + 1 >= w) ? -ws[0] : (b['start'] + 1) % w;
+    b['start'] = (b['start'] + step >= w) ? -ws[0] : (b['start'] + step) % w;
 
     triangle(b['start'] + ws[1], hs[3], b['start'] + ws[1] - ws[4], h - hs[0] - hs[2] - (hs[4] * 4), b['start'] + ws[1] + ws[4], h - hs[0] - hs[2] - (hs[4] * 4));
 
