@@ -46,8 +46,8 @@ setup = () => {
   const d = new Date();
   const hr = d.getHours();
 
-  bg = times[hr + 5].split(',');
-  bbg = times[(hr + 9) % 24].split(',');
+  bg = times[hr].split(',');
+  bbg = times[(hr + 1) % 24].split(',');
   background(bg[0], bg[1], bg[2]);
 
   $('#drop')[0].attributes.style.value = 'background-color: rgb(' + times[hr] + '); color: rgb(' + times[(hr + 3) % 24] + ');';
