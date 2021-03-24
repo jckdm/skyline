@@ -46,8 +46,8 @@ setup = () => {
   const d = new Date();
   const hr = d.getHours();
 
-  bg = times[hr].split(',');
-  bbg = times[(hr + 1) % 24].split(',');
+  bg = times[hr + 5].split(',');
+  bbg = times[(hr + 9) % 24].split(',');
   background(bg[0], bg[1], bg[2]);
 
   $('#drop')[0].attributes.style.value = 'background-color: rgb(' + times[hr] + '); color: rgb(' + times[(hr + 3) % 24] + ');';
@@ -58,16 +58,17 @@ setup = () => {
   }
 
   buildings = [
-    { 'start': null, 'id': 'municipal', 'w': (ws[0] + ws[1]) },
-    { 'start': null, 'id': 'empire', 'w': (ws[0] * 2) },
+    { 'start': null, 'id': 'flatiron', 'w': ws[1] + ws[3] + ws[1] },
+    { 'start': null, 'id': 'municipal', 'w': ws[0] + ws[1] },
+    { 'start': null, 'id': 'empire', 'w': ws[0] * 2 },
     { 'start': null, 'id': 'chrysler', 'w': ws[0] }
   ];
 
-  // buildings = shuffle(buildings);
+  buildings = shuffle(buildings);
 
   let dist = 0.0;
   for (b of buildings) {
-    b['start'] = -b['w'] - dist;
+    b.start = -b['w'] - dist;
     dist += b['w'];
   }
 }
@@ -78,63 +79,82 @@ speed = (v) => step = +v
 draw = () => {
   for (b of buildings) {
 
-    b['start'] = (b['start'] + step >= w) ? -ws[0] : (b['start'] + step) % w;
+    b.start = (b.start + step >= w) ? -ws[0] : (b.start + step) % w;
 
     if (b.id == 'chrysler') {
-      triangle(b['start'] + ws[1], hs[3], b['start'] + ws[1] - ws[4], h - hs[0] - hs[2] - (hs[4] * 4), b['start'] + ws[1] + ws[4], h - hs[0] - hs[2] - (hs[4] * 4));
+      triangle(b.start + ws[1], hs[3], b.start + ws[1] - ws[4], h - hs[0] - hs[2] - (hs[4] * 4), b.start + ws[1] + ws[4], h - hs[0] - hs[2] - (hs[4] * 4));
 
-      circle(b['start'] + ws[1], h - hs[0] - hs[2] - (hs[4] * 4), ws[0] - ws[2] - (ws[3] * 4));
-      circle(b['start'] + ws[1], h - hs[0] - hs[2] - (hs[4] * 3), ws[0] - ws[2] - (ws[3] * 3));
-      circle(b['start'] + ws[1], h - hs[0] - hs[2] - (hs[4] * 2), ws[0] - ws[2] - (ws[3] * 2));
-      circle(b['start'] + ws[1], h - hs[0] - hs[2] - hs[4], ws[0] - ws[2] - ws[3]);
-      circle(b['start'] + ws[1], h - hs[0] - hs[2], ws[0] - ws[2]);
+      circle(b.start + ws[1], h - hs[0] - hs[2] - (hs[4] * 4), ws[0] - ws[2] - (ws[3] * 4));
+      circle(b.start + ws[1], h - hs[0] - hs[2] - (hs[4] * 3), ws[0] - ws[2] - (ws[3] * 3));
+      circle(b.start + ws[1], h - hs[0] - hs[2] - (hs[4] * 2), ws[0] - ws[2] - (ws[3] * 2));
+      circle(b.start + ws[1], h - hs[0] - hs[2] - hs[4], ws[0] - ws[2] - ws[3]);
+      circle(b.start + ws[1], h - hs[0] - hs[2], ws[0] - ws[2]);
 
-      rect(b['start'] + ws[3], h - hs[0] - hs[2], ws[0] - ws[2], hs[0] - hs[2], 5, 5, 0, 0);
-      rect(b['start'], hs[0], ws[0], hs[0], 20, 20, 0, 0);
+      rect(b.start + ws[3], h - hs[0] - hs[2], ws[0] - ws[2], hs[0] - hs[2], 5, 5, 0, 0);
+      rect(b.start, hs[0], ws[0], hs[0], 20, 20, 0, 0);
 
-      rect(b['start'] + ws[2], h - (hs[0] + hs[2] + hs[4]), ws[1], hs[0] + hs[2] + hs[4], 30, 30, 0, 0);
-      rect(b['start'] + ws[2] + ws[3], h - (hs[0] + hs[2]), ws[2], hs[0] + hs[2], 20, 20, 0, 0);
+      rect(b.start + ws[2], h - (hs[0] + hs[2] + hs[4]), ws[1], hs[0] + hs[2] + hs[4], 30, 30, 0, 0);
+      rect(b.start + ws[2] + ws[3], h - (hs[0] + hs[2]), ws[2], hs[0] + hs[2], 20, 20, 0, 0);
 
-      rect(b['start'] + ws[1] + ws[3], hs[0] + hs[4], ws[2], hs[0] + hs[3], 0, 15, 0, 0);
-      rect(b['start'] + ws[3], hs[0] + hs[4], ws[2], hs[0] + hs[3], 15, 0, 0, 0);
+      rect(b.start + ws[1] + ws[3], hs[0] + hs[4], ws[2], hs[0] + hs[3], 0, 15, 0, 0);
+      rect(b.start + ws[3], hs[0] + hs[4], ws[2], hs[0] + hs[3], 15, 0, 0, 0);
     }
     else if (b.id == 'empire') {
-      triangle( b['start'] + ws[0], hs[4], b['start'] + ws[0] - ws[3], h - hs[0] - hs[1] - hs[4], b['start'] + ws[0] + ws[3], h - hs[0] - hs[1] - hs[4]);
+      triangle( b.start + ws[0], hs[4], b.start + ws[0] - ws[3], h - hs[0] - hs[1] - hs[4], b.start + ws[0] + ws[3], h - hs[0] - hs[1] - hs[4]);
 
-      rect(b['start'] + ws[1] + ws[3], h - hs[0] - hs[1] - hs[4], ws[1] + ws[2], hs[4]);
+      rect(b.start + ws[1] + ws[3], h - hs[0] - hs[1] - hs[4], ws[1] + ws[2], hs[4]);
 
-      rect(b['start'] + ws[1] + ws[4], h - hs[0] - hs[1], ws[0] - ws[4] * 2, hs[0] - hs[1]);
-      rect(b['start'] + ws[1] + ws[4], h - hs[0] - hs[1], ws[1] - ws[2], hs[0] - hs[1]);
-      rect(b['start'] + ws[0] + ws[3] + ws[4], h - hs[0] - hs[1], ws[1] - ws[2], hs[0] - hs[1]);
+      rect(b.start + ws[1] + ws[4], h - hs[0] - hs[1], ws[0] - ws[4] * 2, hs[0] - hs[1]);
+      rect(b.start + ws[1] + ws[4], h - hs[0] - hs[1], ws[1] - ws[2], hs[0] - hs[1]);
+      rect(b.start + ws[0] + ws[3] + ws[4], h - hs[0] - hs[1], ws[1] - ws[2], hs[0] - hs[1]);
 
-      rect(b['start'] + ws[1], h - hs[0], ws[0], hs[0], 5, 5, 0, 0);
-      rect(b['start'] + ws[2], h - hs[2], ws[0] * 1.5, hs[2], 5, 5, 0, 0);
-      rect(b['start'], h - hs[3], ws[0] * 2, hs[3], 10, 10, 0, 0);
+      rect(b.start + ws[1], h - hs[0], ws[0], hs[0], 5, 5, 0, 0);
+      rect(b.start + ws[2], h - hs[2], ws[0] * 1.5, hs[2], 5, 5, 0, 0);
+      rect(b.start, h - hs[3], ws[0] * 2, hs[3], 10, 10, 0, 0);
 
-      rect(b['start'] + ws[1], h - hs[0], ws[2], hs[0] - hs[2]);
-      rect(b['start'] + ws[0] + ws[1] - ws[2], h - hs[0], ws[2], hs[0] - hs[2]);
+      rect(b.start + ws[1], h - hs[0], ws[2], hs[0] - hs[2]);
+      rect(b.start + ws[0] + ws[1] - ws[2], h - hs[0], ws[2], hs[0] - hs[2]);
     }
     else if (b.id == 'municipal') {
 
-      rect(b['start'] + ws[0] - ws[2] - (ws[2] / 2.0), h - hs[0] - hs[1] - hs[2] - hs[4], ws[2], hs[2] + hs[4], 20, 20, 0, 0);
+      rect(b.start + ws[0] - ws[2] - (ws[2] / 4.0), h - hs[0] - hs[1] - hs[2] - hs[3], ws[3], hs[2] + hs[4], 20, 20, 0, 0);
+      rect(b.start + ws[0] - ws[2] - (ws[2] / 2.0), h - hs[0] - hs[1] - hs[2], ws[2], hs[3] + hs[4], 20, 20, 0, 0);
 
-      arc(b['start'] + ws[1] + ws[2], h - hs[0] - hs[1], ws[0], ws[0], PI, 0);
+      arc(b.start + ws[1] + ws[2], h - hs[0] - hs[1], ws[0], ws[0], PI, 0);
 
-      rect(b['start'] + ws[2], h - hs[0] - hs[1], ws[4], hs[1]);
-      rect(b['start'] + ws[0] + ws[2] - ws[4], h - hs[0] - hs[1], ws[4], hs[1]);
+      rect(b.start + ws[0] - ws[2] - (ws[4] / 2.0), h - hs[0] - hs[1], ws[4], hs[1]);
 
-      rect(b['start'] + ws[0] - ws[2] - (ws[4] / 2.0), h - hs[0] - hs[1], ws[4], hs[1]);
+      rect(b.start + ws[0] - ws[2] - ws[2] - (ws[4] / 2.0), h - hs[0] - hs[1], ws[4], hs[1]);
+      rect(b.start + ws[0] - (ws[4] / 2.0), h - hs[0] - hs[1], ws[4], hs[1]);
 
-      rect(b['start'] + ws[0] - ws[2] - ws[2] - (ws[4] / 2.0), h - hs[0] - hs[1], ws[4], hs[1]);
-      rect(b['start'] + ws[0] - (ws[4] / 2.0), h - hs[0] - hs[1], ws[4], hs[1]);
+      rect(b.start + ws[2], h - (hs[0] * 1.25), ws[0], hs[1]);
 
-      rect(b['start'] + ws[2], h - (hs[0] * 1.25), ws[0], hs[1]);
-      rect(b['start'] + ws[2], h - hs[0] + hs[4], ws[0], hs[0] - hs[4]);
+      rect(b.start + ws[2], h - hs[0] - hs[1], ws[4], hs[1]);
+      rect(b.start + ws[0] + ws[2] - ws[4], h - hs[0] - hs[1], ws[4], hs[1]);
 
-      triangle(b['start'] + ws[0], h - hs[0], b['start'] + ws[0] + ws[2], h - hs[0] - hs[4], b['start'] + ws[0] + ws[1], h - hs[0]);
-      rect(b['start'] + ws[0], h - hs[0], ws[1], hs[0]);
-      triangle(b['start'], h - hs[0], b['start'] + ws[2], h - hs[0] - hs[4], b['start'] + ws[1], h - hs[0]);
-      rect(b['start'], h - hs[0], ws[1], hs[0]);
+      rect(b.start + ws[2], h - hs[0] + hs[4], ws[0], hs[0] - hs[4]);
+
+      rect(b.start, h - hs[1], ws[0] + ws[1], hs[1]);
+
+      triangle(b.start + ws[0], h - hs[0], b.start + ws[0] + ws[2], h - hs[0] - hs[4], b.start + ws[0] + ws[1], h - hs[0]);
+      rect(b.start + ws[0], h - hs[0], ws[1], hs[0]);
+      triangle(b.start, h - hs[0], b.start + ws[2], h - hs[0] - hs[4], b.start + ws[1], h - hs[0]);
+      rect(b.start, h - hs[0], ws[1], hs[0]);
+    }
+    else if (b.id == 'flatiron') {
+      rect(b.start + ws[1], h - hs[0] - hs[1] - 2.5, ws[3], hs[0] + hs[1] + 2.5, 20, 20, 0, 0);
+
+      quad(b.start, h, b.start, h - hs[0] - hs[3], b.start + ws[1], h - hs[0] - hs[1], b.start + ws[1], h);
+      quad(b.start, h, b.start, h - hs[0] - hs[3] + hs[4], b.start + ws[1], h - hs[0] - hs[2] - hs[3], b.start + ws[1], h);
+      quad(b.start, h, b.start, h - (hs[0] - hs[2]), b.start + ws[1], h - hs[0], b.start + ws[1], h);
+      quad(b.start, h, b.start, h - hs[1], b.start + ws[1], h - hs[1] - hs[3], b.start + ws[1], h);
+      quad(b.start, h, b.start, h - hs[2], b.start + ws[1], h - hs[2] - hs[4], b.start + ws[1], h);
+
+      quad(b.start + ws[1] + ws[3], h - hs[0] - hs[1], b.start + ws[1] + ws[3], h, b.start + ws[1] + ws[3] + ws[1], h, b.start + ws[1] + ws[3] + ws[1], h - hs[0] - hs[3]);
+      quad(b.start + ws[1] + ws[3], h - hs[0] - hs[2] - hs[3], b.start + ws[1] + ws[3], h, b.start + ws[1] + ws[3] + ws[1], h, b.start + ws[1] + ws[3] + ws[1], h - hs[0] - hs[3] + hs[4]);
+      quad(b.start + ws[1] + ws[3], h - hs[0], b.start + ws[1] + ws[3], h, b.start + ws[1] + ws[3] + ws[1], h, b.start + ws[1] + ws[3] + ws[1], h - (hs[0] - hs[2]));
+      quad(b.start + ws[1] + ws[3], h - hs[1] - hs[3], b.start + ws[1] + ws[3], h, b.start + ws[1] + ws[3] + ws[1], h, b.start + ws[1] + ws[3] + ws[1], h - hs[1]);
+      quad(b.start + ws[1] + ws[3], h - hs[2] - hs[4], b.start + ws[1] + ws[3], h, b.start + ws[1] + ws[3] + ws[1], h, b.start + ws[1] + ws[3] + ws[1], h - hs[2]);
     }
   }
   fill(bbg[0], bbg[1], bbg[2]);
