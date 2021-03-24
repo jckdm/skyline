@@ -30,13 +30,6 @@ times = {
 let bg;
 let bbg;
 
-let buildings = [
-  { 'start': null, 'id': 'empire' },
-  { 'start': null, 'id': 'chrysler' }
-];
-
-func = (a, b) => 0.5 - Math.random()
-
 const w = $(window).width() - 17.5;
 const h = $(window).height() - 17.5;
 
@@ -44,6 +37,8 @@ const neW = 100 + Math.sqrt(w) * 15;
 
 const hs = [h * 0.5];
 const ws = [neW * 0.25];
+
+let buildings = [];
 
 setup = () => {
   createCanvas(w, h);
@@ -62,10 +57,19 @@ setup = () => {
     ws.push(ws[i] / 2.0);
   }
 
-  buildings = buildings.sort(func);
+  buildings = [
+    { 'start': null, 'id': 'municipal', 'w': (ws[0] + ws[1]) },
+    { 'start': null, 'id': 'empire', 'w': (ws[0] * 2) },
+    { 'start': null, 'id': 'chrysler', 'w': ws[0] }
+  ];
 
-  buildings[0]['start'] = -ws[0];
-  buildings[1]['start'] = (w / -2.0) - ws[0];
+  // buildings = shuffle(buildings);
+
+  let dist = 0.0;
+  for (b of buildings) {
+    b['start'] = -b['w'] - dist;
+    dist += b['w'];
+  }
 }
 
 let step = 0.75;
@@ -109,6 +113,28 @@ draw = () => {
 
       rect(b['start'] + ws[1], h - hs[0], ws[2], hs[0] - hs[2]);
       rect(b['start'] + ws[0] + ws[1] - ws[2], h - hs[0], ws[2], hs[0] - hs[2]);
+    }
+    else if (b.id == 'municipal') {
+
+      rect(b['start'] + ws[0] - ws[2] - (ws[2] / 2.0), h - hs[0] - hs[1] - hs[2] - hs[4], ws[2], hs[2] + hs[4], 20, 20, 0, 0);
+
+      arc(b['start'] + ws[1] + ws[2], h - hs[0] - hs[1], ws[0], ws[0], PI, 0);
+
+      rect(b['start'] + ws[2], h - hs[0] - hs[1], ws[4], hs[1]);
+      rect(b['start'] + ws[0] + ws[2] - ws[4], h - hs[0] - hs[1], ws[4], hs[1]);
+
+      rect(b['start'] + ws[0] - ws[2] - (ws[4] / 2.0), h - hs[0] - hs[1], ws[4], hs[1]);
+
+      rect(b['start'] + ws[0] - ws[2] - ws[2] - (ws[4] / 2.0), h - hs[0] - hs[1], ws[4], hs[1]);
+      rect(b['start'] + ws[0] - (ws[4] / 2.0), h - hs[0] - hs[1], ws[4], hs[1]);
+
+      rect(b['start'] + ws[2], h - (hs[0] * 1.25), ws[0], hs[1]);
+      rect(b['start'] + ws[2], h - hs[0] + hs[4], ws[0], hs[0] - hs[4]);
+
+      triangle(b['start'] + ws[0], h - hs[0], b['start'] + ws[0] + ws[2], h - hs[0] - hs[4], b['start'] + ws[0] + ws[1], h - hs[0]);
+      rect(b['start'] + ws[0], h - hs[0], ws[1], hs[0]);
+      triangle(b['start'], h - hs[0], b['start'] + ws[2], h - hs[0] - hs[4], b['start'] + ws[1], h - hs[0]);
+      rect(b['start'], h - hs[0], ws[1], hs[0]);
     }
   }
   fill(bbg[0], bbg[1], bbg[2]);
