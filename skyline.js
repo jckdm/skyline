@@ -47,11 +47,11 @@ setup = () => {
   const d = new Date();
   const hr = d.getHours();
 
-  bg = times[hr + 10].split(',');
-  bbg = times[(hr + 11) % 24].split(',');
+  bg = times[hr].split(',');
+  bbg = times[(hr + 1) % 24].split(',');
   background(bg[0], bg[1], bg[2]);
 
-  $('#drop')[0].attributes.style.value = 'background-color: rgb(' + times[hr + 10] + '); color: rgb(' + times[(hr + 14) % 24] + ');';
+  $('#drop')[0].attributes.style.value = 'background-color: rgb(' + times[hr] + '); color: rgb(' + times[(hr + 3) % 24] + ');';
 
   for (let i = 0; i < 4; i++) {
     hs.push(hs[i] / 2.0);
