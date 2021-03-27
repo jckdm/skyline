@@ -65,7 +65,7 @@ setup = () => {
     { 'start': null, 'id': 'f', 'w': ws[1] + ws[2] + ws[1]}
   ];
 
-  buildings = shuffle(buildings);
+  // buildings = shuffle(buildings);
   pickNext();
 }
 
@@ -73,12 +73,13 @@ let i = 0;
 
 pickNext = () => {
   if (i < 4) {
-    b = buildings[i];
+    // b = buildings[i];
+    b = buildings[1];
     b.start = -b.w;
     i++;
   }
   else {
-    buildings = shuffle(buildings);
+    // buildings = shuffle(buildings);
     i = 0;
   }
 }
@@ -110,7 +111,7 @@ draw = () => {
     rect(b.start + ws[3], hs[0] + hs[4], ws[2], hs[0] + hs[3], 15, 0, 0, 0);
   }
   else if (b.id == 'e') {
-    triangle( b.start + ws[0], hs[4], b.start + ws[0] - ws[3], h - hs[0] - hs[1] - hs[4], b.start + ws[0] + ws[3], h - hs[0] - hs[1] - hs[4]);
+    triangle(b.start + ws[0], hs[4], b.start + ws[0] - ws[4], h - hs[0] - hs[1] - hs[4], b.start + ws[0] + ws[4], h - hs[0] - hs[1] - hs[4]);
 
     rect(b.start + ws[1] + ws[3], h - hs[0] - hs[1] - hs[4], ws[1] + ws[2], hs[4]);
 
