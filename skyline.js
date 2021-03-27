@@ -65,7 +65,7 @@ setup = () => {
     { 'start': null, 'id': 'f', 'w': ws[1] + ws[2] + ws[1]}
   ];
 
-  // buildings = shuffle(buildings);
+  buildings = shuffle(buildings);
   pickNext();
 }
 
@@ -73,13 +73,12 @@ let i = 0;
 
 pickNext = () => {
   if (i < 4) {
-    // b = buildings[i];
-    b = buildings[1];
+    b = buildings[i];
     b.start = -b.w;
     i++;
   }
   else {
-    // buildings = shuffle(buildings);
+    buildings = shuffle(buildings);
     i = 0;
   }
 }
